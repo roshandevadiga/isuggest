@@ -9,7 +9,7 @@ module Isuggest
   	raise ArgumentError, 'No column provides' if options[:on].present? && !options[:on].is_a?(Array)
   	self.isuggest_options = {total_suggestions: 5, seperator: ['', '_'] }
   	self.isuggest_options.merge!(options)
-  	include Isuggest::Finder
+    self.send(:include, Isuggest::Finder)
   end
 	  	
   ActiveRecord::Base.send :extend, Isuggest

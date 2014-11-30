@@ -2,7 +2,7 @@ module Isuggest
 	module Finder
 		def self.included(base)
 			base.extend ClassMethods
-			base.include InstanceMethods
+			base.send(:include, InstanceMethods)
 		end
 
 	end
