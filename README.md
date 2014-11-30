@@ -33,6 +33,19 @@ Options available
 ```
 
 
+
+
+Example
+```
+class User
+    suggest_me :on => ['name']
+end
+
+new_user = User.new('NewUser')
+
+new_user.suggestions # returns arrays of result like ['NewUser1', 'NewUser_2', 'NewUser12', NewUser_1]
+```
+
 TODO: 
 1. Allow users to specify multiple columns in the "on" option
 
