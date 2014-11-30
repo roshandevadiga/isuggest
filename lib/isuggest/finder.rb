@@ -8,10 +8,6 @@ module Isuggest
 	end
 
 	module ClassMethods
-		def isuggest_seperator
-			isuggest_options[:seperator]
-		end
-
 		def total_results
 			isuggest_options[:total_suggestions].to_i
 		end
@@ -36,7 +32,8 @@ module Isuggest
 		def filter_suggestions(me_suggests, num)
 			column_name = isuggest_columns.first
 
-			#Considering totol_results count is relatively small < 500, doubling it this should reduce the DB hits
+			#Considering totol_results count is relatively small < 500, 
+			#doubling it should reduce the DB hits
 			while(me_suggests.length < (self.class.total_results * 2)) do 
 			 me_suggests << create_suggestion(self.send(column_name), num) 
 			 me_suggests.uniq!
@@ -50,7 +47,7 @@ module Isuggest
 		end
 
 		def isuggest_columns
-			return self.class.isuggest_options[:on]
+			return options[:on]
 		end
 
 		def is_email?
@@ -58,12 +55,16 @@ module Isuggest
 			self.send(isuggest_columns.first).match(regex).present?
 		end
 
+		def options
+			self.class.isuggest_options
+		end
+
 		def create_suggestion(base_value, num)
 			if is_email?
 				base_value = base_value.split('@')
-				return "#{base_value.first}#{self.class.isuggest_seperator}#{rand(num)}@#{base_value.last}"
+				return "#{base_value.first}#{options[:seperator].sample}#{rand(num)}@#{base_value.last}"
 			else
-				return "#{base_value}#{self.class.isuggest_seperator}#{rand(num)}"
+				return "#{base_value}#{options[:seperator].sample}#{rand(num)}"
 			end
 		end
 	end
