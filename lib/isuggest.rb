@@ -7,7 +7,7 @@ module Isuggest
   	raise ArgumentError, "Hash expected, got #{options.class.name}" if !options.empty? && !options.is_a?(Hash) 
   	raise ArgumentError, 'No column provides' if options[:on].blank?
   	raise ArgumentError, 'No column provides' if options[:on].present? && !options[:on].is_a?(Array)
-  	self.isuggest_options = {total_suggestions: 5, seperator: ['', '_'] }
+  	self.isuggest_options = {total_suggestions: 5, seperator: ['', '_'], suffix: nil }
   	self.isuggest_options.merge!(options)
     self.send(:include, Isuggest::Finder)
   end

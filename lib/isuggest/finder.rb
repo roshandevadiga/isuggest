@@ -11,6 +11,10 @@ module Isuggest
 		def total_results
 			isuggest_options[:total_suggestions].to_i
 		end
+    
+    def suffix
+			isuggest_options[:suffix]
+    end
 	end
 
 	module InstanceMethods
@@ -63,6 +67,8 @@ module Isuggest
 			if is_email?
 				base_value = base_value.split('@')
 				return "#{base_value.first}#{options[:seperator].sample}#{rand(num)}@#{base_value.last}"
+      elsif self.class.suffix.present?
+        return "#{base_value}#{options[:seperator].sample}#{rand(num)}#{self.class.suffix}"
 			else
 				return "#{base_value}#{options[:seperator].sample}#{rand(num)}"
 			end
