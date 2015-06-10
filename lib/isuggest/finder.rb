@@ -11,6 +11,7 @@ module Isuggest
 		def total_results
 			isuggest_options[:total_suggestions].to_i
 		end
+    
 	end
 
 	module InstanceMethods
@@ -19,9 +20,10 @@ module Isuggest
 			return !self.class.exists?(column_name => self.send(column_name))
 		end
 
-		def suggestions
+		def suggestions(with_suffix=nil)
 			me_suggests = []
 			radix = 10
+      @suffix = with_suffix unless with_suffix.nil?
 			while me_suggests.length < self.class.total_results
 				me_suggests = filter_suggestions(me_suggests, radix)
 				radix = radix * 10
@@ -63,6 +65,8 @@ module Isuggest
 			if is_email?
 				base_value = base_value.split('@')
 				return "#{base_value.first}#{options[:seperator].sample}#{rand(num)}@#{base_value.last}"
+      elsif @suffix.present?
+        return "#{base_value}#{options[:seperator].sample}#{rand(num)}#{@suffix}"
 			else
 				return "#{base_value}#{options[:seperator].sample}#{rand(num)}"
 			end
